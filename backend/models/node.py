@@ -1,7 +1,7 @@
 import json
 
 
-class KubeNode:
+class Node:
     def __init__(self, name, uid, memory_pressure, disk_pressure, pid_pressure, ready):
         self.name = name
         self.uid = uid
@@ -31,7 +31,7 @@ class KubeNode:
             if type == 'Ready':
                 ready = condition_json.status == 'True'
 
-        return KubeNode(
+        return Node(
             name=name,
             uid=uid,
             memory_pressure=memory_pressure,
@@ -42,7 +42,7 @@ class KubeNode:
 
     @staticmethod
     def from_dict(kubenode_json):
-        return KubeNode(
+        return Node(
             name=kubenode_json['name'],
             uid=kubenode_json['uid'],
             memory_pressure=kubenode_json['memory_pressure'],

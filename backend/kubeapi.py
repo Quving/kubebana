@@ -8,7 +8,7 @@ from pprint import pprint
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
-from models.kubenode import KubeNode
+from models.node import Node
 from models.pod import Pod
 from util import Logger
 
@@ -64,7 +64,7 @@ class KubeApi:
                 else:
                     ret = api_client.list_node()
 
-                kubenodes = [KubeNode.from_kubernetes_client(node_json=node) for node in ret.items]
+                kubenodes = [Node.from_kubernetes_client(node_json=node) for node in ret.items]
                 kubenodes = sorted(kubenodes, key=lambda k: k.name)
 
                 return kubenodes
@@ -162,7 +162,7 @@ class KubeApi:
 
         def load_kubenode_states_from_file():
             with open(filename, 'r') as file:
-                return [KubeNode.from_dict(json) for json in json.load(file)]
+                return [Node.from_dict(json) for json in json.load(file)]
 
         # Check if a initial kubenodes atate has been set.
         if os.path.exists(filename):
