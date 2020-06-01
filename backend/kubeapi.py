@@ -9,6 +9,7 @@ from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
 from models.kubenode import KubeNode
+from models.pod import Pod
 from util import Logger
 
 
@@ -19,7 +20,7 @@ class KubeApi:
 
     def get_logs_from_pod(self, pod_name, namespace, retry_timer=5):
         """
-        Get the log of a single pod.
+        Get the log of a single pod.py.
         """
         while True:
             try:
@@ -47,7 +48,8 @@ class KubeApi:
                 return [n.metadata.name for n in ret.items]
 
             except ApiException as e:
-                self.logger.error("KubeApi is currently not available (503). Request will be retried in 5s.")
+                error_dict = json.loads(e.body)
+                self.logger.error("{}: {}".format(error_dict['status'], error_dict['message']))
                 time.sleep(retry_timer)
 
     def get_nodes(self, node_label_selector, retry_timer=5):
@@ -67,7 +69,25 @@ class KubeApi:
 
                 return kubenodes
             except ApiException as e:
-                self.logger.error("KubeApi is currently not available (503). Request will be retried in 5s.")
+                error_dict = json.loads(e.body)
+                self.logger.error("{}: {}".format(error_dict['status'], error_dict['message']))
+                time.sleep(retry_timer)
+
+    def get_pods(self, namespace, deployment, retry_timer=5):
+        """
+        Returns a list of pods for a specific deployment within a specifc namespace.
+        """
+        while True:
+            try:
+                api_client = client.CoreV1Api()
+                field_selector = 'metadata.namespace=' + namespace
+                res = api_client.list_pod_for_all_namespaces(field_selector=field_selector)
+
+                pods = [Pod.from_kubernetes_client(r) for r in res.items]
+                return [pod for pod in pods if pod.deployment == deployment]
+            except ApiException as e:
+                error_dict = json.loads(e.body)
+                self.logger.error("{}: {}".format(error_dict['status'], error_dict['message']))
                 time.sleep(retry_timer)
 
     def get_deployments(self, namespace, retry_timer=5):
@@ -78,6 +98,7 @@ class KubeApi:
             try:
                 api_client = client.AppsV1Api()
                 res = api_client.list_namespaced_deployment(namespace=namespace)
+                print(res.items[0])
                 return [r.metadata.name for r in res.items]
             except ApiException as e:
                 self.logger.error("KubeApi is currently not available (503). Request will be retried in 5s.")

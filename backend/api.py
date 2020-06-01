@@ -24,5 +24,26 @@ def list_deployments():
     return kubeapi.get_deployments(namespace=namespace)
 
 
+@app.route('/pods/', methods=['GET'])
+def get_pods():
+    namespace = request.args.get('namespace', default=None, type=str)
+    deployment = request.args.get('deployment', default=None, type=str)
+
+    kubeapi = KubeApi()
+    pods = kubeapi.get_pods(namespace, deployment)
+    return [pod.to_dict() for pod in pods]
+
+
+@app.route('/logs/', methods=['GET'])
+def get_logs():
+    namespace = request.args.get('namespace', default=None, type=str)
+    pod_name = request.args.get('pod_name', default=None, type=str)
+    session_id = request.args.get('session_id', default=None, type=str)
+
+    kubeapi = KubeApi()
+    logs = kubeapi.get_logs_from_pod(pod_name, namespace)
+    return {'session_id': session_id, 'log': logs}
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
