@@ -57,7 +57,10 @@ class KubeApi:
         while True:
             try:
                 api_client = client.CoreV1Api()
-                ret = api_client.list_node(label_selector=node_label_selector)
+                if node_label_selector:
+                    ret = api_client.list_node(label_selector=node_label_selector)
+                else:
+                    ret = api_client.list_node()
 
                 kubenodes = [KubeNode.from_kubernetes_client(node_json=node) for node in ret.items]
                 kubenodes = sorted(kubenodes, key=lambda k: k.name)
