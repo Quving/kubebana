@@ -84,7 +84,11 @@ class KubeApi:
                 res = api_client.list_pod_for_all_namespaces(field_selector=field_selector)
 
                 pods = [Pod.from_kubernetes_client(r) for r in res.items]
-                return [pod for pod in pods if pod.deployment == deployment]
+                if deployment:
+                    return [pod for pod in pods if pod.deployment == deployment]
+                else:
+                    return pods
+
             except ApiException as e:
                 error_dict = json.loads(e.body)
                 self.logger.error("{}: {}".format(error_dict['status'], error_dict['message']))
