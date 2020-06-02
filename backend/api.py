@@ -2,9 +2,10 @@ from flask import request
 from flask_api import FlaskAPI
 
 from kubeapi import KubeApi
+from flask_cors import CORS
 
 app = FlaskAPI(__name__)
-
+CORS(app)
 
 @app.route('/nodes/', methods=['GET'])
 def list_nodes():
