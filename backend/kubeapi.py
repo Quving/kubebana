@@ -101,9 +101,17 @@ class KubeApi:
         while True:
             try:
                 api_client = client.AppsV1Api()
-                res = api_client.list_namespaced_deployment(namespace=namespace)
-                print(res.items[0])
-                return [r.metadata.name for r in res.items]
+                if namespace:
+                    res = [r.metadata for r in api_client.list_namespaced_deployment(namespace=namespace).items]
+                else:
+                    namespaces = self.get_namespaces()
+                    print(namespaces)
+                    res = []
+                    for namespace in namespaces:
+                        res_temp = api_client.list_namespaced_deployment(namespace=namespace)
+                        res += [r.metadata.name for r in res_temp.items]
+
+                return res
             except ApiException as e:
                 self.logger.error("KubeApi is currently not available (503). Request will be retried in 5s.")
                 time.sleep(retry_timer)

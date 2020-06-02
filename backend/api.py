@@ -1,11 +1,12 @@
 from flask import request
 from flask_api import FlaskAPI
+from flask_cors import CORS
 
 from kubeapi import KubeApi
-from flask_cors import CORS
 
 app = FlaskAPI(__name__)
 CORS(app)
+
 
 @app.route('/nodes/', methods=['GET'])
 def list_nodes():
@@ -23,6 +24,12 @@ def list_deployments():
 
     kubeapi = KubeApi()
     return kubeapi.get_deployments(namespace=namespace)
+
+
+@app.route('/namespaces/', methods=['GET'])
+def list_namespaces():
+    kubeapi = KubeApi()
+    return kubeapi.get_namespaces()
 
 
 @app.route('/pods/', methods=['GET'])
