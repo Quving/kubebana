@@ -7,7 +7,7 @@
                         <PodsCard
                                 :deployment="pod.deployment"
                                 :pod-name="pod.name"
-                                :grid-name="pod.creation_timestamp">
+                                :creation-timestamp="pod.creation_timestamp">
                         </PodsCard>
                     </v-col>
                 </v-row>
@@ -33,7 +33,6 @@
             PodsCard
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         created() {
