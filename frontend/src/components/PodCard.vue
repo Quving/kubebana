@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <v-card class="mx-auto" min-width="300" max-width="300" outlined>
+        <v-card class="mx-auto" min-width="300" max-width="300" outlined raised>
             <v-list-item>
                 <v-list-item-content>
                     <div class="overline mb-4">POD</div>
