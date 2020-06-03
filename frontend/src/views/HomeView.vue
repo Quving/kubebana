@@ -1,9 +1,12 @@
 <template>
     <div class="home">
-        <v-layout row wrap>
+        <v-layout row>
             <v-container>
-                <v-row align="center">
-                    <v-col cols="12" sm="6">
+                <v-row justify="center" dense>
+                    <v-col cols="5">
+                        <v-checkbox
+                                v-model="hideSystemNamespaces"
+                                label="Hide system namespaces"></v-checkbox>
                         <v-select
                                 v-model="selectedNamespace"
                                 :items="namespaces"
@@ -14,7 +17,10 @@
                                 persistent-hint
                         ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="5" sm="6">
+                        <v-checkbox
+                                v-model="selectAllDeployments"
+                                label="Select all deployments automatically"></v-checkbox>
                         <v-select
                                 v-model="selectedDeployments"
                                 :items="deployments"
@@ -29,9 +35,8 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-divider class="mx-4" :inset="inset" vertical></v-divider>
-            <v-container fluid>
-                <v-row dense justify="center" align="left">
+            <v-container>
+                <v-row dense justify="center">
                     <v-col v-for="pod in pods" :key="pod.uuid" cols="auto">
                         <PodsCard
                                 :deployment="pod.deployment"
@@ -55,6 +60,8 @@
         name: 'Home',
         data() {
             return {
+                hideSystemNamespaces: true,
+                selectAllDeployments: false,
                 loading: true,
                 pods: [],
                 deployments: [],
@@ -68,8 +75,15 @@
         },
         watch: {
             '$route': 'fetchData',
-            selectedNamespace: function () {
-                this.fetchDeployments(this.selectedNamespace)
+            selectedNamespace: async function () {
+                this.fetchDeployments(this.selectedNamespace).then(() => {
+                        if (this.selectAllDeployments) {
+                            this.selectedDeployments = this.deployments
+                            this.fetchPods()
+                        }
+                    }
+                )
+
             },
             selectedDeployments: function () {
                 const namespace = this.selectedNamespace
@@ -85,25 +99,31 @@
             this.fetchNamespaces()
         },
         methods: {
-            fetchNamespaces() {
+            async fetchNamespaces() {
                 const apiHost = 'http://localhost:5000'
-                axios.get(`${apiHost}/namespaces/`).then((response) => {
-                    this.namespaces = response.data;
-                })
+                new Promise((resolve => {
+                    axios.get(`${apiHost}/namespaces/`).then((response) => {
+                        this.namespaces = response.data;
+                        resolve();
+                    })
+                }));
 
             },
-            fetchDeployments(namespace) {
+            async fetchDeployments(namespace) {
                 const apiHost = 'http://localhost:5000'
                 let params = {
                     namespace: namespace
                 }
 
-                axios.get(`${apiHost}/deployments/`, {params: params}).then((response) => {
-                    this.deployments = response.data;
-                })
+                return new Promise((resolve => {
+                    axios.get(`${apiHost}/deployments/`, {params: params}).then((response) => {
+                        this.deployments = response.data;
+                        resolve();
+                    })
+                }));
 
             },
-            fetchPods(namespaces, deployments) {
+            async fetchPods(namespaces, deployments) {
                 const apiHost = 'http://localhost:5000'
                 let params = {
                     namespace: namespaces,
@@ -114,15 +134,6 @@
                     this.pods = response.data;
                 })
             },
-            fetchData() {
-                this.loading = true
-                this.fetchDeployments(
-                    this.selectedNamespace.join(",")
-                );
-                this.fetchNamespaces();
-                this.fetchPods();
-                this.loading = false;
-            }
         },
     }
 </script>
