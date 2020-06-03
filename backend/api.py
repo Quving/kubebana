@@ -10,7 +10,7 @@ CORS(app)
 
 @app.route('/nodes/', methods=['GET'])
 def list_nodes():
-    label_selector = request.args.get('selector', default=None, type=str)
+    label_selector = request.args.get('selector', default="", type=str)
 
     kubeapi = KubeApi()
     kubenodes = kubeapi.get_nodes(node_label_selector=label_selector)
@@ -20,10 +20,13 @@ def list_nodes():
 
 @app.route('/deployments/', methods=['GET'])
 def list_deployments():
-    namespace = request.args.get('namespace', default=None, type=str)
+    namespace_param = request.args.get('namespace', default="", type=str)
 
     kubeapi = KubeApi()
-    return kubeapi.get_deployments(namespace=namespace)
+    deployments = []
+    for namespace in namespace_param.split(","):
+        deployments += kubeapi.get_deployments(namespace=namespace)
+    return deployments
 
 
 @app.route('/namespaces/', methods=['GET'])
@@ -33,20 +36,24 @@ def list_namespaces():
 
 
 @app.route('/pods/', methods=['GET'])
-def get_pods():
-    namespace = request.args.get('namespace', default=None, type=str)
-    deployment = request.args.get('deployment', default=None, type=str)
+def list_pods():
+    namespace_param = request.args.get('namespace', default="", type=str)
+    deployment_param = request.args.get('deployment', default="", type=str)
 
     kubeapi = KubeApi()
-    pods = kubeapi.get_pods(namespace, deployment)
+    pods = []
+    for deployment in deployment_param.split(","):
+        for namespace in namespace_param.split(","):
+            pods += kubeapi.get_pods(namespace, deployment)
+
     return [pod.to_dict() for pod in pods]
 
 
 @app.route('/logs/', methods=['GET'])
 def get_logs():
-    namespace = request.args.get('namespace', default=None, type=str)
-    pod_name = request.args.get('pod_name', default=None, type=str)
-    session_id = request.args.get('session_id', default=None, type=str)
+    namespace = request.args.get('namespace', default="", type=str)
+    pod_name = request.args.get('pod_name', default="", type=str)
+    session_id = request.args.get('session_id', default="", type=str)
 
     kubeapi = KubeApi()
     logs = kubeapi.get_logs_from_pod(pod_name, namespace)
