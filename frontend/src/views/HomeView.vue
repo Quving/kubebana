@@ -13,11 +13,12 @@
                                 :menu-props="{ maxHeight: '400' }"
                                 label="Namespaces"
                                 chips
+                                deletable-chips
                                 hint="Select a single namespace"
                                 persistent-hint
                         ></v-select>
                     </v-col>
-                    <v-col cols="5" sm="6">
+                    <v-col cols="5">
                         <v-checkbox
                                 v-model="selectAllDeployments"
                                 label="Select all deployments automatically"></v-checkbox>
@@ -28,6 +29,7 @@
                                 label="Deployments"
                                 :disabled="!Boolean(selectedNamespace)"
                                 multiple
+                                deletable-chips
                                 chips
                                 hint="Select one or more deployment(s)"
                                 persistent-hint
