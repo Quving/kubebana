@@ -6,7 +6,9 @@
                     <v-col cols="5">
                         <v-checkbox
                                 v-model="hideSystemNamespaces"
-                                label="Hide system namespaces"></v-checkbox>
+                                disabled
+                                label="Hide system namespaces">
+                        </v-checkbox>
                         <v-select
                                 v-model="selectedNamespace"
                                 :items="namespaces"
@@ -21,7 +23,8 @@
                     <v-col cols="5">
                         <v-checkbox
                                 v-model="selectAllDeployments"
-                                label="Select all deployments automatically"></v-checkbox>
+                                label="Select all deployments automatically">
+                        </v-checkbox>
                         <v-select
                                 v-model="selectedDeployments"
                                 :items="deployments"
