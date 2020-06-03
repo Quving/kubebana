@@ -20,6 +20,7 @@
                                 :items="deployments"
                                 :menu-props="{ maxHeight: '400' }"
                                 label="Deployments"
+                                :disabled="!Boolean(selectedNamespace)"
                                 multiple
                                 chips
                                 hint="Select one or more deployment(s)"
@@ -28,8 +29,9 @@
                     </v-col>
                 </v-row>
             </v-container>
+            <v-divider class="mx-4" :inset="inset" vertical></v-divider>
             <v-container fluid>
-                <v-row dense justify="center" align="center">
+                <v-row dense justify="center" align="left">
                     <v-col v-for="pod in pods" :key="pod.uuid" cols="auto">
                         <PodsCard
                                 :deployment="pod.deployment"
@@ -75,6 +77,8 @@
 
                 if (namespace && deployment)
                     this.fetchPods(namespace, deployment)
+                else
+                    this.pods = []
             },
         },
         created() {
