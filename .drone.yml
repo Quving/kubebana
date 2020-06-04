@@ -1,0 +1,43 @@
+---
+kind: pipeline
+type: docker
+name: server
+steps:
+- name: publish server
+  image: plugins/docker
+  settings:
+    repo:
+      from_secret: docker_repository
+    context: server
+    tags:
+      - server-${DRONE_BRANCH}
+    dockerfile: server/Dockerfile
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    status: [ success ]
+    branch: [ master, develop ]
+
+---
+kind: pipeline
+type: docker
+name: web
+steps:
+- name: publish web
+  image: plugins/docker
+  settings:
+    repo:
+      from_secret: docker_repository
+    context: web
+    tags:
+      - web-${DRONE_BRANCH}
+    dockerfile: web/Dockerfile
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    status: [ success ]
+    branch: [ master, develop ]
