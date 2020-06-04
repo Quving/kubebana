@@ -39,8 +39,6 @@
                         ></v-select>
                     </v-col>
                 </v-row>
-            </v-container>
-            <v-container>
                 <v-row dense justify="center">
                     <v-col v-for="pod in pods" :key="pod.uuid" cols="auto">
                         <PodsCard
