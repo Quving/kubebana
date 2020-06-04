@@ -8,7 +8,7 @@
                         :messages="message" outlined>
                 <template v-slot:label>
                     <div>
-                        Bio <small>(optional)</small>
+                        Logs <small>(...)</small>
                     </div>
                 </template>
             </v-textarea>
@@ -18,7 +18,10 @@
                 <v-btn @click="scrollToNewest">Scroll to latest</v-btn>
             </v-col>
             <v-col>
-                <v-btn disabled @click="tailLogs">Tail Logs</v-btn>
+                <v-btn @click="fetchPodLog">Update</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn ontoggle="true" disabled @click="tailLogs">Tail Logs</v-btn>
             </v-col>
         </v-row>
     </v-container>
