@@ -6,21 +6,24 @@
             </div>
             <v-spacer></v-spacer>
         </v-app-bar>
-
         <v-content>
-            <HomeView/>
+            <Header></Header>
+            <router-view></router-view>
+            <Footer></Footer>
         </v-content>
     </v-app>
 </template>
 
 <script>
-    import HomeView from './views/HomeView';
+    import Header from './components/Header';
+    import Footer from './components/Footer';
 
     export default {
         name: 'App',
 
         components: {
-            HomeView,
+            Header,
+            Footer
         },
 
         data: () => ({
