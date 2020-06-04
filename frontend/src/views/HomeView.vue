@@ -59,6 +59,7 @@
 <script>
     import PodsCard from "../components/PodCard";
 
+    const config = require('../config');
     const axios = require('axios');
 
     export default {
@@ -105,9 +106,8 @@
         },
         methods: {
             async fetchNamespaces() {
-                const apiHost = 'http://localhost:5000'
                 new Promise((resolve => {
-                    axios.get(`${apiHost}/namespaces/`).then((response) => {
+                    axios.get(`${config.envs.apiHostUrl}/namespaces/`).then((response) => {
                         this.namespaces = response.data;
                         resolve();
                     })
@@ -115,13 +115,12 @@
 
             },
             async fetchDeployments(namespace) {
-                const apiHost = 'http://localhost:5000'
                 let params = {
                     namespace: namespace
                 }
 
                 return new Promise((resolve => {
-                    axios.get(`${apiHost}/deployments/`, {params: params}).then((response) => {
+                    axios.get(`${config.envs.apiHostUrl}/deployments/`, {params: params}).then((response) => {
                         this.deployments = response.data;
                         resolve();
                     })
@@ -129,13 +128,12 @@
 
             },
             async fetchPods(namespaces, deployments) {
-                const apiHost = 'http://localhost:5000'
                 let params = {
                     namespace: namespaces,
                     deployment: deployments
                 }
 
-                axios.get(`${apiHost}/pods/`, {params: params}).then((response) => {
+                axios.get(`${config.envs.apiHostUrl}/pods/`, {params: params}).then((response) => {
                     this.pods = response.data;
                 })
             },
