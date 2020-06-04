@@ -1,10 +1,11 @@
-FROM node:13.5.0
+FROM node:14.1.0
 
 LABEL maintainer="Vinh Ngu"
 
 # Build assets
 WORKDIR /build
 ADD . .
+
 RUN npm install
 RUN npm run build
 
