@@ -5,7 +5,7 @@
         </v-row>
         <v-row align="start">
             <v-textarea id="log-container" v-model="log" rows="40" readonly color="teal" clearable counter="100000"
-                        messages="Last-updated: TT:MM:YYYY" outlined>
+                        :messages="message" outlined>
                 <template v-slot:label>
                     <div>
                         Bio <small>(optional)</small>
@@ -34,7 +34,8 @@
                 podName: this.$route.params.podName,
                 namespace: this.$route.params.namespace,
                 deployment: this.$route.params.deployment,
-                log: ""
+                log: "",
+                message: "",
             }
         },
         created() {
@@ -58,6 +59,7 @@
                 axios.get(`${config.envs.apiHostUrl}/logs`, {params: params}).then((response) => {
                     this.loading = false;
                     this.log = response.data.log;
+                    this.message = "Latest Updated: " + new Date().toString()
                     this.scrollToNewest();
                 })
             }
