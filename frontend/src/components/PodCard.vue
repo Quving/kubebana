@@ -22,7 +22,7 @@
                 </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-                <v-btn color="orange" text>Logs</v-btn>
+                <v-btn color="orange" @click="showLogView" text>Logs</v-btn>
             </v-card-actions>
         </v-card>
     </div>
@@ -33,9 +33,15 @@
         name: 'PodsCard',
         props: {
             deployment: String,
+            namespace: String,
             podName: String,
             creationTimestamp: String,
         },
+        methods: {
+            showLogView: function () {
+                this.$router.push(`/namespace/${this.namespace}/deployment/${this.deployment}/pod/${this.podName}`);
+            }
+        }
     }
 </script>
 <style>

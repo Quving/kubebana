@@ -46,6 +46,7 @@
                         <PodsCard
                                 :deployment="pod.deployment"
                                 :pod-name="pod.name"
+                                :namespace="pod.namespace"
                                 :creation-timestamp="pod.creation_timestamp">
                         </PodsCard>
                     </v-col>
