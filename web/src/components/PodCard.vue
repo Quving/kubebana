@@ -22,7 +22,7 @@
                 </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-                <v-btn color="orange" @click="showLogView" text>Logs</v-btn>
+                <v-btn @click="showLogView">View Logs</v-btn>
             </v-card-actions>
         </v-card>
     </div>

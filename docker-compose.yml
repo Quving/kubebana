@@ -1,8 +1,9 @@
 version: '3.7'
 services:
   server:
-    image: quving/kubebana:server-master
-    restart: always
+    image: kubebana:server-master
+    build:
+      context: server
     ports:
       - 5000:5000
     volumes:
@@ -11,11 +12,13 @@ services:
       - TZ=Europe/Berlin
 
   web:
-    image: quving/kubebana:web-master
-    ports:
-      - 80:80
+    image: kubeana:web-master
+    build:
+      context: web
     depends_on:
       - server
+    ports:
+      - 80:80
     environment:
       - TZ=Europe/Berlin
-      - KUBEBANA_API_HOST=server
+      - VUE_APP_KUBEBANA_API_HOST=http://server:5000/
