@@ -14,7 +14,7 @@ RUN bash scripts/tokenize.sh
 FROM nginx:latest
 
 COPY --from=0 /build/dist /usr/share/nginx/html
-# COPY --from=0 /build/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=0 /build/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=0 /build/scripts .
 COPY --from=0 /build/src/config.js .
 
