@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row justify="center">
-            <h2>Pod: '{{podName}}'</h2>
+            <h2 style="color: grey"> {{podName}}</h2>
         </v-row>
         <v-row>
             <v-textarea full-width style="font-family: monospace; font-size: 14px" id="log-container" v-model="log" rows="40" readonly color="black" clearable counter="100000"
