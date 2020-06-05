@@ -57,5 +57,5 @@ services:
       - server
     environment:
       - TZ=Europe/Berlin
-      - KUBEBANA_API_HOST=server
+      - VUE_APPKUBEBANA_API_HOST=http://server:5000
 ```
