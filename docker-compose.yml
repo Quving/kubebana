@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  server:
+    image: quving/kubebana:server-master
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ${HOME}/.kube/config:/root/.kube/config
+    environment:
+      - TZ=Europe/Berlin
+
+  web:
+    image: quving/kubebana:web-master
+    ports:
+      - 80:80
+    depends_on:
+      - server
+    environment:
+      - TZ=Europe/Berlin
+      - KUBEBANA_API_HOST=server
