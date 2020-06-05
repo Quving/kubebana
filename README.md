@@ -23,3 +23,39 @@ Well, you get the pain-point...
 
 ## Solution
 Kubebana is a tool that solves this problem. It is characterized by the simplicity of accessing the logs of specific deployments or pods. It is a webapp and its use does not require a special setup (for the user/developer).
+
+
+## Setup
+### Environment Variables
+
+web-service
+ - KUBEBANA_API_HOST_PROTO (default: 'http')
+ - KUBEBANA_API_HOST_PORT (default: '5000')
+ - KUBEBANA_API_HOST (default: 'localhost')
+
+server-service
+ - None
+
+### docker-compose.yml
+```
+services:
+  server:
+    image: quving/kubebana:server-master
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ${HOME}/.kube/config:/root/.kube/config
+    environment:
+      - TZ=Europe/Berlin
+
+  web:
+    image: quving/kubebana:web-master
+    ports:
+      - 80:80
+    depends_on:
+      - server
+    environment:
+      - TZ=Europe/Berlin
+      - KUBEBANA_API_HOST=server
+```
