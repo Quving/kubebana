@@ -1,9 +1,5 @@
-const apiHostProtocol = process.env.KUBEBANA_API_HOST_PROTO ?? 'http'
-const apiHostPort = process.env.KUBEBANA_API_HOST_PORT ?? '5000';
-const apiHost = process.env.KUBEBANA_API_HOST ?? 'localhost';
+// Parse envs.
 const envs = {
-    apiHostUrl: `${apiHostProtocol}://${apiHost}:${apiHostPort}/`
-
+    apiHostUrl: process.env.VUE_APP_KUBEBANA_API_HOST ?? 'localhost'
 }
-
 exports.envs = envs;
