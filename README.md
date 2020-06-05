@@ -2,6 +2,8 @@
 
 [![Build Status](https://drone.quving.com/api/badges/Quving/kubebana/status.svg)](https://drone.quving.com/Quving/kubebana)
 
+A tool made for developers/devops to access the logs for techstacks kubernetes backbone.
+
 ## Motivation
 Many companies use Kubernetes because Kubernetes now represents the industry standard.The framework is nowadays the backbone of every modern infrastructure of a tech company today. Kubernetes covers every imaginable function and everyone talks about it. However, Kubernetes is everything but not beginner-friendly due to its montrous complexity, even for DevOps. Kubernetes is not only a toy for Admins and DevOps. Developers who work in a tech company have to be familiar with Kubernetes as well. Sometimes a bug occurs in the application and the logs have to be analyzed. Depending on the [cloud provider](https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/) such as Azure, Aws, ... , developers have to authorize themselves differently, click through many non-trivial options and then access the logs. That's pain.
 
