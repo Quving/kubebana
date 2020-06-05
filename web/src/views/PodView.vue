@@ -4,12 +4,11 @@
             <h2 style="color: grey"> {{podName}}</h2>
         </v-row>
         <v-row>
-            <v-textarea style="font-family: monospace; font-size: 14px" id="log-container" v-model="log"
-                        rows="40" dense readonly color="black" clearable :messages="message" outlined>
+            <v-textarea loader-height="5" :loading="loading" style="font-family: monospace; font-size: 14px"
+                        id="log-container" v-model="log" rows="40" dense readonly
+                        clearable :messages="message" outlined>
                 <template v-slot:label>
-                    <div>
-                        Logs <small>(...)</small>
-                    </div>
+                    <div> Pod Logs</div>
                 </template>
             </v-textarea>
         </v-row>
@@ -39,6 +38,7 @@
                 deployment: this.$route.params.deployment,
                 log: "",
                 message: "",
+                loading: false,
             }
         },
         created() {
