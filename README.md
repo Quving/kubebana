@@ -31,9 +31,7 @@ Kubebana is a tool that solves this problem. It is characterized by the simplici
 ### Environment Variables
 
 web-service
- - KUBEBANA_API_HOST_PROTO (default: 'http')
- - KUBEBANA_API_HOST_PORT (default: '5000')
- - KUBEBANA_API_HOST (default: 'localhost')
+ - VUE_APP_KUBEBANA_API_HOST (default: 'localhost')
 
 server-service
  - None
