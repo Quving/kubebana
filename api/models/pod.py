@@ -1,10 +1,11 @@
 class Pod:
-    def __init__(self, name, uuid, deployment, namespace, creation_timestamp):
+    def __init__(self, name, uuid, deployment, namespace, creation_timestamp, image):
         self.name = name
         self.uuid = uuid
         self.namespace = namespace
         self.deployment = deployment
         self.creation_timestamp = creation_timestamp
+        self.image = image
 
     @staticmethod
     def from_kubernetes_client(node_json):
@@ -13,6 +14,7 @@ class Pod:
         uuid = node_json.metadata.uid
         namespace = node_json.metadata.namespace
         creation_timestamp = node_json.metadata.creation_timestamp
+        image = node_json.spec.containers[0].image
 
         deployment = "-".join(name.split("-")[:-2])
         return Pod(
@@ -21,6 +23,7 @@ class Pod:
             deployment=deployment,
             namespace=namespace,
             creation_timestamp=creation_timestamp,
+            image=image
         )
 
     def to_dict(self):
