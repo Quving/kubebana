@@ -4,7 +4,9 @@
             <v-list-item>
                 <v-list-item-content>
                     <div class="overline mb-4">POD</div>
-                    <v-list-item-title class="headline mb-1">{{titleCase(deployment)}}</v-list-item-title>
+                    <v-list-item-title class="headline mb-1">
+                        <strong>{{deployment.toUpperCase()}}</strong>
+                    </v-list-item-title>
                     <v-list-item-subtitle></v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
