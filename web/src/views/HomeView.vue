@@ -45,7 +45,9 @@
                                 :deployment="pod.deployment"
                                 :pod-name="pod.name"
                                 :namespace="pod.namespace"
-                                :creation-timestamp="pod.creation_timestamp">
+                                :creation-timestamp="pod.creation_timestamp"
+                                :docker-image="pod.image
+                        ">
                         </PodsCard>
                     </v-col>
                 </v-row>
