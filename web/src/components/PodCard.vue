@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <v-card class="mx-auto" min-width="300" max-width="300" outlined raised>
+        <v-card class="mx-auto" min-width="350" max-width="350" min-height="400" max-height="900" outlined raised>
             <v-list-item>
                 <v-list-item-content>
                     <div class="overline mb-4">POD</div>
@@ -9,25 +9,14 @@
                 </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item>
+            <v-list-item v-for="(v,k) in items" :key="v">
                 <v-list-item-content>
-                    <v-list-item-title>PodName</v-list-item-title>
-                    <v-list-item-subtitle>{{podName}}</v-list-item-subtitle>
+                    <v-list-item-title>{{k}}</v-list-item-title>
+                    <v-list-item-subtitle>{{v}}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
-            <v-list-item>
-                <v-list-item-content>
-                    <v-list-item-title>CreatedAt</v-list-item-title>
-                    <v-list-item-subtitle>{{creationTimestamp}}</v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-                <v-list-item-content>
-                    <v-list-item-title>Image</v-list-item-title>
-                    <v-list-item-subtitle>{{dockerImage}}</v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
-            <v-card-actions align="right">
+            <v-divider></v-divider>
+            <v-card-actions>
                 <v-btn color="primary" @click="showLogView">Logs</v-btn>
                 <v-btn disabled color="primary" @click="showDetails">Details</v-btn>
             </v-card-actions>
@@ -38,6 +27,16 @@
 <script>
     export default {
         name: 'PodsCard',
+        data() {
+            return {
+                items: {
+                    "CreatedAt": this.creationTimestamp,
+                    "DockerImage": this.dockerImage,
+                    "Namespace": this.namespace,
+                    "PodName": this.podName,
+                }
+            }
+        },
         props: {
             deployment: String,
             namespace: String,
