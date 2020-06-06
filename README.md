@@ -39,8 +39,8 @@ server-service
 ### docker-compose.yml
 ```
 services:
-  server:
-    image: quving/kubebana:server-master
+  api:
+    image: quving/kubebana:api-master
     restart: always
     ports:
       - 5000:5000

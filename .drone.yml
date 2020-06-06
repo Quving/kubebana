@@ -1,17 +1,17 @@
 ---
 kind: pipeline
 type: docker
-name: server
+name: api
 steps:
-- name: publish server
+- name: publish api
   image: plugins/docker
   settings:
     repo:
       from_secret: docker_repository
-    context: server
+    context: api
     tags:
-      - server-${DRONE_BRANCH}
-    dockerfile: server/Dockerfile
+      - api-${DRONE_BRANCH}
+    dockerfile: api/Dockerfile
     username:
       from_secret: docker_username
     password:

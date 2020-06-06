@@ -1,9 +1,9 @@
 version: '3.7'
 services:
-  server:
-    image: kubebana:server-master
+  api:
+    image: kubebana:api-master
     build:
-      context: server
+      context: api
     ports:
       - 5000:5000
     volumes:
