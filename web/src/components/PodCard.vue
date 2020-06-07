@@ -11,7 +11,7 @@
                 </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item v-for="(v,k) in items" :key="v">
+            <v-list-item v-for="(v,k) in listItems" :key="v">
                 <v-list-item-content>
                     <v-list-item-title>{{k}}</v-list-item-title>
                     <v-list-item-subtitle>{{v}}</v-list-item-subtitle>
@@ -30,7 +30,7 @@
         name: 'PodsCard',
         data() {
             return {
-                items: {
+                listItems: {
                     "CreatedAt": new Date(this.creationTimestamp).toLocaleString(),
                     "DockerImage": this.dockerImage,
                     "Namespace": this.namespace,
