@@ -14,7 +14,7 @@
                 <v-btn @click="scrollToNewest">Scroll to latest</v-btn>
             </v-col>
             <v-col>
-                <v-btn @click="fetchPodLog">Update</v-btn>
+                <v-btn @click="fetchPodLog">Refresh</v-btn>
             </v-col>
             <v-col>
                 <v-btn ontoggle="true" disabled @click="tailLogs">Tail Logs</v-btn>
