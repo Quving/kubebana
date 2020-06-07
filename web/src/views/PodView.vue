@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row justify="center">
-            <h2 style="color: grey"> {{podName}}</h2>
+            <h2 style="color: grey"> {{podName.toUpperCase()}}</h2>
         </v-row>
         <v-row>
             <v-textarea background-color="black" loader-height="5" :loading="loading"
