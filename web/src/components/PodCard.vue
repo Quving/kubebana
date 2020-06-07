@@ -48,7 +48,8 @@
         },
         methods: {
             showLogView: function () {
-                this.$router.push(`/namespace/${this.namespace}/deployment/${this.deployment}/pod/${this.podName}`);
+                let route = this.$router.resolve(`/namespace/${this.namespace}/deployment/${this.deployment}/pod/${this.podName}`);
+                window.open(route.href, '_blank');
             },
             showDetails: function () {
 
