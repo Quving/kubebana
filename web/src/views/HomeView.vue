@@ -82,6 +82,9 @@
         },
         watch: {
             '$route': 'fetchData',
+            selectAllDeployments: function(){
+                this.selectedDeployments = this.deployments;
+            },
             selectedNamespace: async function () {
                 this.fetchDeployments(this.selectedNamespace).then(() => {
                         if (this.selectAllDeployments) {
