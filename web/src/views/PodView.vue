@@ -4,21 +4,16 @@
             <h2 style="color: grey"> {{podName}}</h2>
         </v-row>
         <v-row>
-            <v-textarea dark background-color="black" loader-height="5" :loading="loading"
+            <v-textarea background-color="black" loader-height="5" :loading="loading"
                         id="log-container" v-model="log" rows="40" dense readonly
-                        clearable :messages="message" outlined>
+                        :messages="message" outlined>
             </v-textarea>
         </v-row>
-        <v-row>
-            <v-col>
-                <v-btn @click="scrollToNewest">Scroll to latest</v-btn>
-            </v-col>
-            <v-col>
-                <v-btn @click="fetchPodLog">Refresh</v-btn>
-            </v-col>
-            <v-col>
-                <v-btn ontoggle="true" disabled @click="tailLogs">Tail Logs</v-btn>
-            </v-col>
+        <v-row justify="center">
+            <v-btn class="ma-3" color="primary" @click="scrollToNewest">Scroll to latest</v-btn>
+            <v-btn class="ma-3" color="primary" @click="fetchPodLog">Refresh</v-btn>
+            <v-btn class="ma-3" color="primary" disabled @click="tailLogs">Enable Autorefresh</v-btn>
+            <v-btn class="ma-3" color="primary" @click="clearLogs">Clear Logs</v-btn>
         </v-row>
     </v-container>
 </template>
@@ -45,6 +40,9 @@
             tailLogs() {
 
             },
+            clearLogs() {
+                this.log = '';
+            },
             scrollToNewest() {
                 const element = document.getElementById('log-container');
                 if (element) element.scrollTop = element.scrollHeight;
@@ -59,7 +57,7 @@
                 axios.get(`${config.envs.apiHostUrl}/logs`, {params: params}).then((response) => {
                     this.loading = false;
                     this.log = response.data.log;
-                    this.message = "Latest Updated: " + new Date().toString()
+                    this.message = "Last Update: " + new Date().toString()
                     this.scrollToNewest();
                 })
             }
@@ -77,5 +75,6 @@
     #log-container {
         font-family: monospace;
         font-size: 14px;
+        color: white;
     }
 </style>
