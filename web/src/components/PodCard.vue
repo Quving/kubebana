@@ -20,7 +20,6 @@
             <v-divider></v-divider>
             <v-card-actions>
                 <v-btn color="primary" @click="showLogView">Logs</v-btn>
-                <v-btn disabled color="primary" @click="showDetails">Details</v-btn>
             </v-card-actions>
         </v-card>
     </div>
@@ -40,19 +39,16 @@
             }
         },
         props: {
+            creationTimestamp: String,
             deployment: String,
+            dockerImage: String,
             namespace: String,
             podName: String,
-            creationTimestamp: String,
-            dockerImage: String
         },
         methods: {
             showLogView: function () {
                 let route = this.$router.resolve(`/namespace/${this.namespace}/deployment/${this.deployment}/pod/${this.podName}`);
                 window.open(route.href, '_blank');
-            },
-            showDetails: function () {
-
             },
             titleCase: function (str) {
                 str = str.toLowerCase().split(' ').map(function (word) {
