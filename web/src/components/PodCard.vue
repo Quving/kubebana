@@ -32,7 +32,7 @@
         data() {
             return {
                 items: {
-                    "CreatedAt": this.creationTimestamp,
+                    "CreatedAt": new Date(this.creationTimestamp).toLocaleString(),
                     "DockerImage": this.dockerImage,
                     "Namespace": this.namespace,
                     "PodName": this.podName,
