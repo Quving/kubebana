@@ -4,12 +4,9 @@
             <h2 style="color: grey"> {{podName}}</h2>
         </v-row>
         <v-row>
-            <v-textarea loader-height="5" :loading="loading" style="font-family: monospace; font-size: 14px"
+            <v-textarea dark background-color="black" loader-height="5" :loading="loading"
                         id="log-container" v-model="log" rows="40" dense readonly
                         clearable :messages="message" outlined>
-                <template v-slot:label>
-                    <div> Pod Logs</div>
-                </template>
             </v-textarea>
         </v-row>
         <v-row>
@@ -76,3 +73,9 @@
         }
     }
 </script>
+<style>
+    #log-container {
+        font-family: monospace;
+        font-size: 14px;
+    }
+</style>
