@@ -17,8 +17,11 @@ export default new Vuex.Store({
     },
     mutations: {
         authUser(state, userData) {
-            state.jwtToken = userData.jwtToken
+            state.jwtToken = userData.jwtToken;
         },
+        clearAuthData(state) {
+            state.jwtToken = null;
+        }
     },
     actions: {
         login: ({commit}, authData) => {
@@ -32,7 +35,7 @@ export default new Vuex.Store({
                 .catch(error => console.log(error));
         },
         logout: ({commit}) => {
-            commit('RESET', '');
+            commit('clearAuthData');
         }
     }
 });
