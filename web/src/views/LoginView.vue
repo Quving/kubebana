@@ -48,6 +48,9 @@
 </template>
 
 <script>
+    import AuthService from "../services/AuthService";
+    import Axios from "axios";
+
     export default {
         data: function () {
             return {
@@ -58,11 +61,23 @@
             };
         },
         methods: {
-            submit: async function () {
-                this.$store.dispatch('login', {username: this.username, password: this.password});
-                this.$router.push('/');
-                this.alert_type = 'success';
-                this.status = 'Login successful!';
+            submit: function () {
+                AuthService.login(this.username, this.password)
+                    .then(response => {
+                        this.$store.dispatch('login', {jwtToken: response.data.access_token});
+                        Axios.defaults.headers.common['Authorization'] = `JWT ${response.data.access_token}`;
+                        this.$router.push('/');
+                        this.alert_type = 'success';
+                        this.status = 'Login successful.';
+                    })
+                    .catch(error => {
+                        this.alert_type = 'error';
+                        if (error.response.status === 401) {
+                            this.status = 'User cannot be found.';
+                        } else {
+                            this.status = 'Error occured. Please try it later again.';
+                        }
+                    });
             }
         }
     };
