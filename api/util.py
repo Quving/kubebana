@@ -26,20 +26,10 @@ def get_config(config_file='config.json'):
             logger.info('Config found:\n')
 
             # Check config syntax briefly.
-            for key in ['interval', 'deployments', 'namespace', 'node_label_selector']:
+            for key in ['users', 'secret_key']:
                 if not key in config:
                     logger.error('Config.json is missing "{}" attribute. Please add it.'.format(key))
                     sys.exit(-1)
-
-            valid_interval = isinstance(config['interval'], int) and config['interval'] > 0
-            valid_deployments = isinstance(config['deployments'], list) and not bool([])
-            valid_namespace = isinstance(config['namespace'], str) and not bool(config['namespace'])
-            valid_node_label_selector = isinstance(config['node_label_selector'], str) and not bool(
-                config['node_label_selector'])
-
-            if not valid_interval and valid_deployments and valid_namespace and valid_node_label_selector:
-                logger.error('Config.json is not valid. Please check it.')
-                sys.exit(-1)
 
             pprint(config)
             print('\n')
@@ -47,12 +37,16 @@ def get_config(config_file='config.json'):
     else:
         with open(config_file, 'w') as file:
             config = {
-                'deployments': [],
-                'interval': 0,
-                'namespace': '',
-                'node_label_selector': '',
+                "users": [
+                    {
+                        "username": "admin",
+                        "password": "pass123"
+                    }
+                ],
+                "secret_key": "yp&3>d7H(T~_K6jhKDE9LHJJ",
             }
             json.dump(config, file, indent=4)
+            return config
 
-        logger.error('No config found. Please provide one by editing the generated config.json.')
+        logger.error('No config found. Default values will be set.')
         sys.exit(-1)
