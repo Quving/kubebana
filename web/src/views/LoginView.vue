@@ -22,7 +22,7 @@
                                 <v-text-field
                                         name="password"
                                         label="Password"
-                                        value="new-password"
+                                        value="your-password"
                                         id="password"
                                         type="password"
                                         autocomplete="password"
@@ -49,7 +49,6 @@
 
 <script>
     export default {
-        name: 'login-component',
         data: function () {
             return {
                 username: '',
@@ -60,20 +59,10 @@
         },
         methods: {
             submit: async function () {
-                try {
-                    this.$store.dispatch('login', {username: this.username, password: this.password});
-                    this.alert_type = 'success';
-                    this.status = 'Login successful!';
-
-                } catch (error) {
-                    if (error.response.status === 401) {
-                        this.alert_type = 'error';
-                        this.status = error.response.data.detail;
-                    } else {
-                        this.alert_type = 'error';
-                        this.status = error.response.data;
-                    }
-                }
+                this.$store.dispatch('login', {username: this.username, password: this.password});
+                this.$router.push('/');
+                this.alert_type = 'success';
+                this.status = 'Login successful!';
             }
         }
     };

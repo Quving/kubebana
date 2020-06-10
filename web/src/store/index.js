@@ -11,14 +11,13 @@ export default new Vuex.Store({
         jwtToken: null,
     },
     getters: {
-        isLoggedIn: state => !!state.token,
-        getUser: state => {
-            return state.user;
+        isAuthenticated(state) {
+            return state.jwtToken !== null;
         }
     },
     mutations: {
         authUser(state, userData) {
-            state.jwtToken = userData.token
+            state.jwtToken = userData.jwtToken
         },
     },
     actions: {
@@ -26,7 +25,7 @@ export default new Vuex.Store({
             AuthService.login(authData.username, authData.password)
                 .then(response => {
                     commit('authUser', {
-                        idToken: response.data.access_token
+                        jwtToken: response.data.access_token
                     });
                     Axios.defaults.headers.common['Authorization'] = `JWT ${response.data.access_token}`;
                 })
