@@ -1,13 +1,5 @@
 <template>
     <v-app>
-        <v-app-bar app color="secondary" dark>
-            <div class="d-flex align-center">
-                <router-link to="/" style="color: white ">
-                    <h1>Kubebana</h1>
-                </router-link>
-            </div>
-            <v-spacer></v-spacer>
-        </v-app-bar>
         <v-content>
             <Header></Header>
             <router-view></router-view>
