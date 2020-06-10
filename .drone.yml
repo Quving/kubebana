@@ -19,6 +19,22 @@ steps:
   when:
     status: [ success ]
     branch: [ master, develop ]
+- name: publish release '${DRONE_TAG}'
+  image: plugins/docker
+  settings:
+    repo:
+      from_secret: docker_repository
+    context: api
+    dockerfile: api/Dockerfile
+    tags: api-${DRONE_TAG}
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    status: [ success ]
+    event:
+      - tag
 
 ---
 kind: pipeline
@@ -41,3 +57,19 @@ steps:
   when:
     status: [ success ]
     branch: [ master, develop ]
+- name: publish release '${DRONE_TAG}'
+  image: plugins/docker
+  settings:
+    repo:
+      from_secret: docker_repository
+    context: web
+    dockerfile: web/Dockerfile
+    tags: web-${DRONE_TAG}
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    status: [ success ]
+    event:
+      - tag
