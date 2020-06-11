@@ -1,15 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
 import PodLogs from '../views/PodView'
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
+        path: '/login',
+        name: 'Login',
+        component: LoginView
+    },
+    {
         path: '/',
         name: 'Home',
-        component: HomeView
+        component: HomeView,
+        beforeEnter(to, from, next) {
+            if (store.getters.isAuthenticated) next()
+            else next('/login')
+        }
     },
     {
         path: '/namespace/:namespace/deployment/:deployment/pod/:podName',
