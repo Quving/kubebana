@@ -36,6 +36,22 @@ steps:
     event:
       - tag
 
+- name: rollout api
+  image: quving/drone-rancher-cicd:latest
+  settings:
+    stamp: ${DRONE_COMMIT}
+    kubernetes_deployment: kubebana,kubebana-api
+    kubernetes_namespace: apps
+    rancher_url:
+      from_secret: rancher_url
+    rancher_token:
+      from_secret: rancher_token
+    rancher_context:
+      from_secret: rancher_context
+  when:
+    status: [ success ]
+    branch: [ master ]
+
 ---
 kind: pipeline
 type: docker
@@ -73,3 +89,18 @@ steps:
     status: [ success ]
     event:
       - tag
+- name: rollout web
+  image: quving/drone-rancher-cicd:latest
+  settings:
+    stamp: ${DRONE_COMMIT}
+    kubernetes_deployment: kubebana,kubebana-api
+    kubernetes_namespace: apps
+    rancher_url:
+      from_secret: rancher_url
+    rancher_token:
+      from_secret: rancher_token
+    rancher_context:
+      from_secret: rancher_context
+  when:
+    status: [ success ]
+    branch: [ master ]
