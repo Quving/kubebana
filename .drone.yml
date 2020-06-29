@@ -40,7 +40,7 @@ steps:
   image: quving/drone-rancher-cicd:latest
   settings:
     stamp: ${DRONE_COMMIT}
-    kubernetes_deployment: kubebana,kubebana-api
+    kubernetes_deployment: kubebana-api
     kubernetes_namespace: apps
     rancher_url:
       from_secret: rancher_url
@@ -93,7 +93,7 @@ steps:
   image: quving/drone-rancher-cicd:latest
   settings:
     stamp: ${DRONE_COMMIT}
-    kubernetes_deployment: kubebana,kubebana-api
+    kubernetes_deployment: kubebana
     kubernetes_namespace: apps
     rancher_url:
       from_secret: rancher_url
