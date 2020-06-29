@@ -54,7 +54,10 @@
                     namespace: this.namespace,
                     session_id: "randomUUID"
                 };
-                axios.get(`${config.envs.apiHostUrl}/logs`, {params: params}).then((response) => {
+                const url = `${config.envs.apiHostUrl}/logs`;
+                console.log(url);
+                axios.get(url, {params: params}).then((response) => {
+                    console.log(response.request);
                     this.loading = false;
                     this.log = response.data.log;
                     this.message = "Last Update: " + new Date().toString()
