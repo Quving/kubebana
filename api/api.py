@@ -7,22 +7,28 @@ from werkzeug.security import safe_str_cmp
 import util
 from kubeapi import KubeApi
 
+config = util.get_config()
+
 
 class User(object):
     def __init__(self, id, username, password):
-        self.id = id,
+        self.id = id
         self.username = username
         self.password = password
 
     def __str__(self):
         return "User(id='%s')" % self.id
 
+    def __repr__(self):
+        return "User(id='%s')" % self.id
 
-config = util.get_config()
 
 users = []
 for i in range(len(config['users'])):
-    users.append(User(i, config['users'][i]['username'], config['users'][i]['password']))
+    users.append(User(i + 1,  # Id must be greater than 0.
+                      config['users'][i]['username'],
+                      config['users'][i]['password']))
+
 username_table = {u.username: u for u in users}
 userid_table = {u.id: u for u in users}
 
@@ -45,8 +51,8 @@ CORS(app)
 jwt = JWT(app, authenticate, identity)
 
 
-@jwt_required()
 @app.route('/nodes/', methods=['GET'])
+@jwt_required()
 def list_nodes():
     label_selector = request.args.get('selector', default="", type=str)
 
@@ -56,8 +62,8 @@ def list_nodes():
     return [kubenode.to_dict() for kubenode in kubenodes]
 
 
-@jwt_required()
 @app.route('/deployments/', methods=['GET'])
+@jwt_required()
 def list_deployments():
     namespace_param = request.args.get('namespace', default="", type=str)
 
@@ -68,15 +74,15 @@ def list_deployments():
     return deployments
 
 
-@jwt_required()
 @app.route('/namespaces/', methods=['GET'])
+@jwt_required()
 def list_namespaces():
     kubeapi = KubeApi()
     return kubeapi.get_namespaces()
 
 
-@jwt_required()
 @app.route('/pods/', methods=['GET'])
+@jwt_required()
 def list_pods():
     namespace_param = request.args.get('namespace', default="", type=str)
     deployment_param = request.args.get('deployment', default="", type=str)
@@ -90,8 +96,8 @@ def list_pods():
     return [pod.to_dict() for pod in pods]
 
 
-@jwt_required()
 @app.route('/logs/', methods=['GET'])
+@jwt_required()
 def get_logs():
     namespace = request.args.get('namespace', default="", type=str)
     pod_name = request.args.get('pod_name', default="", type=str)

@@ -35,6 +35,7 @@ def get_config(config_file='config.json'):
             print('\n')
             return config
     else:
+        logger.error('No config found. Default values will be set.')
         with open(config_file, 'w') as file:
             config = {
                 "users": [
@@ -47,6 +48,3 @@ def get_config(config_file='config.json'):
             }
             json.dump(config, file, indent=4)
             return config
-
-        logger.error('No config found. Default values will be set.')
-        sys.exit(-1)
