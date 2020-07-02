@@ -1,58 +1,39 @@
 from flask import request
-from flask_api import FlaskAPI
+from flask_api import FlaskAPI, status
 from flask_cors import CORS
-from flask_jwt import JWT, jwt_required
-from werkzeug.security import safe_str_cmp
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import check_password_hash, generate_password_hash
 
 import util
 from kubeapi import KubeApi
 
 config = util.get_config()
 
-
-class User(object):
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password = password
-
-    def __str__(self):
-        return "User(id='%s')" % self.id
-
-    def __repr__(self):
-        return "User(id='%s')" % self.id
-
-
-users = []
-for i in range(len(config['users'])):
-    users.append(User(i + 1,  # Id must be greater than 0.
-                      config['users'][i]['username'],
-                      config['users'][i]['password']))
-
-username_table = {u.username: u for u in users}
-userid_table = {u.id: u for u in users}
-
-
-def authenticate(username, password):
-    user = username_table.get(username, None)
-    if user and safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
-        return user
-
-
-def identity(payload):
-    user_id = payload['identity']
-    return userid_table.get(user_id, None)
-
-
 app = FlaskAPI(__name__)
 app.config['SECRET_KEY'] = config['secret_key']
 CORS(app)
 
-jwt = JWT(app, authenticate, identity)
+users = {}
+for user in config['users']:
+    users[user['username']] = generate_password_hash(user['password'])
+
+auth = HTTPBasicAuth()
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and check_password_hash(users.get(username), password):
+        return username
+
+
+@app.route('/auth/', methods=['GET'])
+@auth.login_required
+def login():
+    return {"status": "authorized"}
 
 
 @app.route('/nodes/', methods=['GET'])
-@jwt_required()
+@auth.login_required
 def list_nodes():
     label_selector = request.args.get('selector', default="", type=str)
 
@@ -63,7 +44,7 @@ def list_nodes():
 
 
 @app.route('/deployments/', methods=['GET'])
-@jwt_required()
+@auth.login_required
 def list_deployments():
     namespace_param = request.args.get('namespace', default="", type=str)
 
@@ -75,14 +56,14 @@ def list_deployments():
 
 
 @app.route('/namespaces/', methods=['GET'])
-@jwt_required()
+@auth.login_required
 def list_namespaces():
     kubeapi = KubeApi()
     return kubeapi.get_namespaces()
 
 
 @app.route('/pods/', methods=['GET'])
-@jwt_required()
+@auth.login_required
 def list_pods():
     namespace_param = request.args.get('namespace', default="", type=str)
     deployment_param = request.args.get('deployment', default="", type=str)
@@ -97,7 +78,7 @@ def list_pods():
 
 
 @app.route('/logs/', methods=['GET'])
-@jwt_required()
+@auth.login_required
 def get_logs():
     namespace = request.args.get('namespace', default="", type=str)
     pod_name = request.args.get('pod_name', default="", type=str)
