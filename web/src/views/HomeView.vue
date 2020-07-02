@@ -74,7 +74,7 @@
                 deployments: [],
                 selectedDeployments: [],
                 selectedNamespace: "",
-                namespaces: []
+                namespaces: [],
             }
         },
         components: {
@@ -82,7 +82,7 @@
         },
         watch: {
             '$route': 'fetchData',
-            selectAllDeployments: function(){
+            selectAllDeployments: function () {
                 this.selectedDeployments = this.deployments;
             },
             selectedNamespace: async function () {
@@ -111,7 +111,9 @@
         methods: {
             async fetchNamespaces() {
                 new Promise((resolve => {
-                    axios.get(`${config.envs.apiHostUrl}/namespaces/`).then((response) => {
+                    axios.get(`${config.envs.apiHostUrl}/namespaces/`, {
+                        auth: this.$store.getters.credentials
+                    }).then((response) => {
                         this.namespaces = response.data;
                         resolve();
                     })
@@ -124,7 +126,10 @@
                 }
 
                 return new Promise((resolve => {
-                    axios.get(`${config.envs.apiHostUrl}/deployments/`, {params: params}).then((response) => {
+                    axios.get(`${config.envs.apiHostUrl}/deployments/`, {
+                        params: params,
+                        auth: this.$store.getters.credentials
+                    }).then((response) => {
                         this.deployments = response.data;
                         resolve();
                     })
@@ -137,7 +142,10 @@
                     deployment: deployments
                 }
 
-                axios.get(`${config.envs.apiHostUrl}/pods/`, {params: params}).then((response) => {
+                axios.get(`${config.envs.apiHostUrl}/pods/`, {
+                    params: params,
+                    auth: this.$store.getters.credentials
+                }).then((response) => {
                     this.pods = response.data;
                 })
             },

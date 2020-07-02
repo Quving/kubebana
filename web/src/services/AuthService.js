@@ -9,7 +9,7 @@ export default {
             username: username,
             password: password
         }
-        const url = config.envs.apiHostUrl + '/auth';
-        return axios.post(url, credentials)
+        const url = config.envs.apiHostUrl + '/auth/';
+        return axios.get(url, {auth: credentials})
     },
 };

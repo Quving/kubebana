@@ -49,7 +49,6 @@
 
 <script>
     import AuthService from "../services/AuthService";
-    import Axios from "axios";
 
     export default {
         data: function () {
@@ -64,8 +63,14 @@
             submit: function () {
                 AuthService.login(this.username, this.password)
                     .then(response => {
-                        this.$store.dispatch('login', {jwtToken: response.data.access_token});
-                        Axios.defaults.headers.common['Authorization'] = `JWT ${response.data.access_token}`;
+                        response;
+
+                        this.$store.dispatch('login', {
+                            credentials: {
+                                username: this.username,
+                                password: this.password
+                            }
+                        });
                         this.$router.push('/');
                         this.alert_type = 'success';
                         this.status = 'Login successful.';

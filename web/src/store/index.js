@@ -8,28 +8,28 @@ export default new Vuex.Store({
     strict: true,
     plugins: [createPersistedState()],
     state: {
-        jwtToken: null,
+        credentials: null
     },
     getters: {
         isAuthenticated(state) {
-            return state.jwtToken !== null;
+            return state.credentials !== null;
         },
-        jwtToken(state) {
-            return state.jwtToken;
+        credentials(state) {
+            return state.credentials;
         }
     },
     mutations: {
         authUser(state, userData) {
-            state.jwtToken = userData.jwtToken;
+            state.credentials = userData.credentials;
         },
         clearAuthData(state) {
-            state.jwtToken = null;
+            state.credentials = null;
         }
     },
     actions: {
         login: ({commit}, authData) => {
             commit('authUser', {
-                jwtToken: authData.jwtToken
+                credentials: authData.credentials,
             });
         },
         logout: ({commit}) => {
