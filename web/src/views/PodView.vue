@@ -5,11 +5,13 @@
         </v-row>
         <v-row>
             <v-textarea background-color="black" loader-height="5" :loading="loading"
-                        id="log-container" v-model="log" rows="40" dense readonly
+                        id="log-container" v-model="log" dense readonly
                         :messages="message" outlined>
+<!--                        style="min-height: 800px"-->
+
             </v-textarea>
         </v-row>
-        <v-row justify="center">
+        <v-row justify="center" align="bottom">
             <v-btn class="ma-3" color="primary" @click="scrollToNewest">Scroll to latest</v-btn>
             <v-btn class="ma-3" color="primary" @click="fetchPodLog">Refresh</v-btn>
             <v-btn class="ma-3" color="primary" disabled @click="tailLogs">Enable Autorefresh</v-btn>
