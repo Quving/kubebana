@@ -5,10 +5,8 @@
         </v-row>
         <v-row>
             <v-textarea background-color="black" loader-height="5" :loading="loading"
-                        id="log-container" v-model="log" dense readonly
+                        id="log-container" v-model="log" dense readonly rows="20"
                         :messages="message" outlined>
-<!--                        style="min-height: 800px"-->
-
             </v-textarea>
         </v-row>
         <v-row justify="center" align="bottom">

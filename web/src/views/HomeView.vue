@@ -2,43 +2,51 @@
     <div class="home">
         <v-layout row>
             <v-container>
-                <v-row justify="center" dense>
-                    <v-col cols="5">
-                        <v-checkbox
-                                v-model="hideSystemNamespaces"
-                                disabled
-                                label="Hide system namespaces">
-                        </v-checkbox>
-                        <v-select
-                                v-model="selectedNamespace"
-                                :items="namespaces"
-                                :menu-props="{ maxHeight: '400' }"
-                                label="Namespaces"
-                                chips
-                                deletable-chips
-                                hint="Select a single namespace"
-                                persistent-hint
-                        ></v-select>
-                    </v-col>
-                    <v-col cols="5">
-                        <v-checkbox
-                                v-model="selectAllDeployments"
-                                label="Select all deployments automatically">
-                        </v-checkbox>
-                        <v-select
-                                v-model="selectedDeployments"
-                                :items="deployments"
-                                :menu-props="{ maxHeight: '400' }"
-                                label="Deployments"
-                                :disabled="!Boolean(selectedNamespace)"
-                                multiple
-                                deletable-chips
-                                chips
-                                hint="Select one or more deployment(s)"
-                                persistent-hint
-                        ></v-select>
-                    </v-col>
-                </v-row>
+                <v-container>
+                    <v-row dense>
+                        <v-col>
+                            <v-checkbox
+                                    v-model="hideSystemNamespaces"
+                                    disabled
+                                    label="Hide system namespaces">
+                            </v-checkbox>
+                        </v-col>
+                        <v-col>
+                            <v-checkbox
+                                    v-model="selectAllDeployments"
+                                    label="Select all deployments">
+                            </v-checkbox>
+                        </v-col>
+                    </v-row>
+                    <v-row dense>
+                        <v-col>
+                            <v-select
+                                    v-model="selectedNamespace"
+                                    :items="namespaces"
+                                    :menu-props="{ maxHeight: '400' }"
+                                    label="Namespaces"
+                                    chips
+                                    deletable-chips
+                                    hint="Select a single namespace"
+                                    persistent-hint
+                            ></v-select>
+                        </v-col>
+                        <v-col>
+                            <v-select
+                                    v-model="selectedDeployments"
+                                    :items="deployments"
+                                    :menu-props="{ maxHeight: '400' }"
+                                    label="Deployments"
+                                    :disabled="!Boolean(selectedNamespace)"
+                                    multiple
+                                    deletable-chips
+                                    chips
+                                    hint="Select one or more deployment(s)"
+                                    persistent-hint
+                            ></v-select>
+                        </v-col>
+                    </v-row>
+                </v-container>
                 <v-row dense justify="center">
                     <v-col v-for="pod in pods" :key="pod.uuid" cols="auto">
                         <PodsCard
@@ -46,9 +54,8 @@
                                 :pod-name="pod.name"
                                 :namespace="pod.namespace"
                                 :creation-timestamp="pod.creation_timestamp"
-                                :docker-image="pod.image
-                        ">
-                        </PodsCard>
+                                :docker-image="pod.image"
+                        ></PodsCard>
                     </v-col>
                 </v-row>
             </v-container>
