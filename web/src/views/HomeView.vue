@@ -116,7 +116,7 @@
             this.fetchNamespaces()
         },
         methods: {
-            async fetchNamespaces() {
+            fetchNamespaces() {
                 new Promise((resolve => {
                     axios.get(`${config.envs.apiHostUrl}/namespaces/`, {
                         auth: this.$store.getters.credentials
@@ -127,7 +127,7 @@
                 }));
 
             },
-            async fetchDeployments(namespace) {
+            fetchDeployments(namespace) {
                 let params = {
                     namespace: namespace
                 }
@@ -143,7 +143,7 @@
                 }));
 
             },
-            async fetchPods(namespaces, deployments) {
+            fetchPods(namespaces, deployments) {
                 let params = {
                     namespace: namespaces,
                     deployment: deployments
