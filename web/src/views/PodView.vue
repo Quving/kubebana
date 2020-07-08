@@ -9,7 +9,7 @@
                         :messages="message" outlined>
             </v-textarea>
         </v-row>
-        <v-row justify="center" align="bottom">
+        <v-row justify="center">
             <v-btn class="ma-3" color="primary" @click="scrollToNewest">Scroll to latest</v-btn>
             <v-btn class="ma-3" color="primary" @click="fetchPodLog">Refresh</v-btn>
             <v-btn class="ma-3" color="primary" disabled @click="tailLogs">Enable Autorefresh</v-btn>
