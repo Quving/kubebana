@@ -92,7 +92,8 @@
             selectAllDeployments: function () {
                 this.selectedDeployments = this.deployments;
             },
-            selectedNamespace: async function () {
+            selectedNamespace: function () {
+                this.storePreferences();
                 this.fetchDeployments(this.selectedNamespace).then(() => {
                         if (this.selectAllDeployments) {
                             this.selectedDeployments = this.deployments
@@ -105,7 +106,7 @@
             selectedDeployments: function () {
                 const namespace = this.selectedNamespace
                 const deployment = this.selectedDeployments.join(",")
-
+                this.storePreferences();
                 if (namespace && deployment)
                     this.fetchPods(namespace, deployment)
                 else
@@ -113,19 +114,33 @@
             },
         },
         created() {
-            this.fetchNamespaces()
+            this.fetchNamespaces();
         },
         methods: {
+            storePreferences() {
+                this.$store.dispatch('homeview', {
+                    preferences: {
+                        selectedDeployments: this.selectedDeployments,
+                        selectedNamespace: this.selectedNamespace
+                    }
+                })
+            },
             fetchNamespaces() {
                 new Promise((resolve => {
                     axios.get(`${config.envs.apiHostUrl}/namespaces/`, {
                         auth: this.$store.getters.credentials
                     }).then((response) => {
                         this.namespaces = response.data;
+                        this.loadUserPreferences();
                         resolve();
                     })
                 }));
 
+            },
+            loadUserPreferences() {
+                const homePreferences = this.$store.getters.userHomePreferences;
+                this.selectedDeployments = homePreferences.selectedDeployments;
+                this.selectedNamespace = homePreferences.selectedNamespace;
             },
             fetchDeployments(namespace) {
                 let params = {
