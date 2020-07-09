@@ -18,7 +18,7 @@ export default new Vuex.Store({
         credentials(state) {
             return state.credentials;
         },
-        userHomePreferences(state){
+        userHomePreferences(state) {
             return state.homePreferences;
         }
     },

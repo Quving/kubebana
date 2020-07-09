@@ -95,13 +95,11 @@
             selectedNamespace: function () {
                 this.storePreferences();
                 this.fetchDeployments(this.selectedNamespace).then(() => {
-                        if (this.selectAllDeployments) {
-                            this.selectedDeployments = this.deployments
-                            this.fetchPods()
-                        }
+                    if (this.selectAllDeployments) {
+                        this.selectedDeployments = this.deployments
+                        this.fetchPods()
                     }
-                )
-
+                })
             },
             selectedDeployments: function () {
                 const namespace = this.selectedNamespace
