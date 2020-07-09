@@ -112,6 +112,7 @@
             },
         },
         created() {
+            this.loadUserPreferences();
             this.fetchNamespaces();
         },
         methods: {
@@ -129,7 +130,7 @@
                         auth: this.$store.getters.credentials
                     }).then((response) => {
                         this.namespaces = response.data;
-                        this.loadUserPreferences();
+                        this.selectedNamespace = (this.namespaces.includes(this.selectedNamespace)) ? this.selectedNamespace : "";
                         resolve();
                     })
                 }));
@@ -151,6 +152,7 @@
                         auth: this.$store.getters.credentials
                     }).then((response) => {
                         this.deployments = response.data;
+                        this.selectedDeployments = this.selectedDeployments.filter(x => this.deployments.includes(x));
                         resolve();
                     })
                 }));
