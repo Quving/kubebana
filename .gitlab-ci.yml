@@ -1,0 +1,100 @@
+image: docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - build
+  - deploy
+  - tag
+
+variables:
+  DRAFT_API: $CI_REGISTRY_IMAGE/api:$CI_PIPELINE_ID
+  DRAFT_WEB: $CI_REGISTRY_IMAGE/web:$CI_PIPELINE_ID
+  MASTER_API: $CI_REGISTRY_IMAGE/api:master
+  MASTER_WEB: $CI_REGISTRY_IMAGE/web:master
+  TAG_API: $CI_REGISTRY_IMAGE/api:$CI_COMMIT_TAG
+  TAG_WEB: $CI_REGISTRY_IMAGE/web:$CI_COMMIT_TAG
+  STABLE_API: $CI_REGISTRY_IMAGE/api:stable
+  STABLE_WEB: $CI_REGISTRY_IMAGE/web:stable
+  RANCHER: $CI_REGISTRY/hoou/rancher-cicd:master
+  PROXY_HTTP: http://proxy.hoou.ovh:3128
+  PROXY_HTTPS: http://proxy.hoou.ovh:3128
+
+
+before_script:
+  - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+
+build api:
+  stage: build
+  script:
+    - docker build
+      --build-arg http_proxy=$PROXY_HTTP
+      --build-arg https_proxy=$PROXY_HTTPS
+      -t $DRAFT_API
+      -f api/Dockerfile
+      api
+
+build web:
+  stage: build
+  script:
+    - docker build
+      --build-arg http_proxy=$PROXY_HTTP
+      --build-arg https_proxy=$PROXY_HTTPS
+      -t $DRAFT_WEB
+      -f web/Dockerfile
+      web
+
+deploy api:
+  stage: deploy
+  only:
+    - master
+    - /^release.*$/
+  script:
+    - docker tag $DRAFT_API $MASTER_API
+    - docker push $MASTER_API
+    - docker run --rm
+      -e RANCHER_URL=$RANCHER_URL
+      -e RANCHER_TOKEN=$RANCHER_TOKEN
+      -e RANCHER_CONTEXT=$RANCHER_CONTEXT
+      -e KUBERNETES_NAMESPACE=tools
+      -e KUBERNETES_DEPLOYMENT=kubebana-api
+      -e STAMP=$CI_COMMIT_SHORT_SHA
+      $RANCHER
+
+deploy web:
+  stage: deploy
+  only:
+    - master
+    - /^release.*$/
+  script:
+    - docker tag $DRAFT_WEB $MASTER_WEB
+    - docker push $MASTER_WEB
+    - docker run --rm
+      -e RANCHER_URL=$RANCHER_URL
+      -e RANCHER_TOKEN=$RANCHER_TOKEN
+      -e RANCHER_CONTEXT=$RANCHER_CONTEXT
+      -e KUBERNETES_NAMESPACE=tools
+      -e KUBERNETES_DEPLOYMENT=kubebana
+      -e STAMP=$CI_COMMIT_SHORT_SHA
+      $RANCHER
+
+tag api:
+  stage: tag
+  only:
+    - tags
+  script:
+    - docker tag $DRAFT_API $TAG_API
+    - docker tag $DRAFT $STABLE_API
+    - docker push $TAG_API
+    - docker push $STABLE_API
+
+tag web:
+  stage: tag
+  only:
+    - tags
+  script:
+    - docker tag $DRAFT_WEB $TAG_WEB
+    - docker tag $DRAFT $STABLE_WEB
+    - docker push $TAG_WEB
+    - docker push $STABLE_WEB
