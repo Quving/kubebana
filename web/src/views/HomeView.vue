@@ -139,7 +139,7 @@
             loadUserPreferences() {
                 const homePreferences = this.$store.getters.userHomePreferences;
                 this.selectedDeployments = homePreferences.selectedDeployments ?? [];
-                this.selectedNamespace = homePreferences.selectedNamespace ?? [];
+                this.selectedNamespace = homePreferences.selectedNamespace ?? "";
             },
             fetchDeployments(namespace) {
                 let params = {
