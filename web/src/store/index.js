@@ -9,7 +9,10 @@ export default new Vuex.Store({
     plugins: [createPersistedState()],
     state: {
         credentials: null,
-        homePreferences: null
+        homePreferences: {
+            selectedNamespace: null,
+            selectedDeployments: null
+        }
     },
     getters: {
         isAuthenticated(state) {
@@ -29,9 +32,14 @@ export default new Vuex.Store({
         homePreferences(state, data) {
             state.homePreferences = data.preferences;
         },
-        clearAuthData(state) {
+        clearUserData(state) {
             state.credentials = null;
+            state.homePreferences = {
+                selectedNamespace: null,
+                selectedDeployments: null
+            };
         }
+
     },
     actions: {
         homeview: ({commit}, data) => {
@@ -45,7 +53,7 @@ export default new Vuex.Store({
             });
         },
         logout: ({commit}) => {
-            commit('clearAuthData');
+            commit('clearUserData');
         }
     }
 });

@@ -75,13 +75,13 @@
         data() {
             return {
                 hideSystemNamespaces: true,
-                selectAllDeployments: false,
                 loading: true,
                 pods: [],
-                deployments: [],
-                selectedDeployments: [],
-                selectedNamespace: "",
                 namespaces: [],
+                deployments: [],
+                selectedNamespace: [],
+                selectedDeployments: [],
+                selectAllDeployments: false,
             }
         },
         components: {
