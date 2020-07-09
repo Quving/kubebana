@@ -85,7 +85,7 @@ tag api:
     - tags
   script:
     - docker tag $DRAFT_API $TAG_API
-    - docker tag $DRAFT $STABLE_API
+    - docker tag $DRAFT_API $STABLE_API
     - docker push $TAG_API
     - docker push $STABLE_API
 
@@ -95,6 +95,6 @@ tag web:
     - tags
   script:
     - docker tag $DRAFT_WEB $TAG_WEB
-    - docker tag $DRAFT $STABLE_WEB
+    - docker tag $DRAFT_WEB $STABLE_WEB
     - docker push $TAG_WEB
     - docker push $STABLE_WEB
