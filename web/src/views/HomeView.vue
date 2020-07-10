@@ -12,10 +12,24 @@
                             </v-checkbox>
                         </v-col>
                         <v-col>
-                            <v-checkbox
-                                    v-model="selectAllDeployments"
-                                    label="Select all deployments">
-                            </v-checkbox>
+                            <v-row>
+                                <v-btn
+                                        class="ma-2"
+                                        :loading="false"
+                                        :disabled="false"
+                                        color="success"
+                                        @click="selectAllDeployments">
+                                    Select All Deployments
+                                </v-btn>
+                                <v-btn
+                                        class="ma-2"
+                                        :loading="false"
+                                        :disabled="false"
+                                        color="success"
+                                        @click="disselectAllDeployments">
+                                    Disselect All Deployments
+                                </v-btn>
+                            </v-row>
                         </v-col>
                     </v-row>
                     <v-row dense>
@@ -77,11 +91,11 @@
                 hideSystemNamespaces: true,
                 loading: true,
                 pods: [],
+                text: "Select all Deployments",
                 namespaces: [],
                 deployments: [],
                 selectedNamespace: [],
                 selectedDeployments: [],
-                selectAllDeployments: false,
             }
         },
         components: {
@@ -89,13 +103,10 @@
         },
         watch: {
             '$route': 'fetchData',
-            selectAllDeployments: function () {
-                this.selectedDeployments = this.deployments;
-            },
             selectedNamespace: function () {
                 this.storePreferences();
                 this.fetchDeployments(this.selectedNamespace).then(() => {
-                    if (this.selectAllDeployments) {
+                    if (this.toggleSelectAllDeployments) {
                         this.selectedDeployments = this.deployments
                         this.fetchPods()
                     }
@@ -157,6 +168,12 @@
                     })
                 }));
 
+            },
+            selectAllDeployments: function () {
+                this.selectedDeployments = this.deployments;
+            },
+            disselectAllDeployments: function () {
+                this.selectedDeployments = [];
             },
             fetchPods(namespaces, deployments) {
                 let params = {
